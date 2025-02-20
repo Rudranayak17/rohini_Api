@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
   res.send(`<h1>Server is working </h1> `);
 });
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/jobProvider", jobSeekerProvider);
+app.use("/api/v1/job", jobSeekerProvider);
 app.use("/uploads", express.static("uploads"));
 
 app.use(errorMiddleware);

@@ -3,7 +3,10 @@ import Job from "../model/jobProviderModel.js";
 // Get all jobs
 export const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find();
+    const jobs = await Job.find().populate(
+      "userID",
+      "username email phone role"
+    );
     res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -58,8 +61,7 @@ export const createJob = async (req, res) => {
     } = req.body;
 
     const userID = req.user._id;
-
-
+console.log(req.user._id)
     const job = new Job({
       jobTitle,
       department,
@@ -76,7 +78,7 @@ export const createJob = async (req, res) => {
       benefits,
       deadline,
       accommodations,
-      userID, 
+      userID: userID,
     });
 
     // Save the job instance to the database
