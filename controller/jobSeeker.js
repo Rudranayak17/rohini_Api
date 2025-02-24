@@ -5,6 +5,7 @@ export const getAllApplications = async (req, res) => {
   try {
     const applications = await JobApplication.find();
     res.status(200).json(applications);
+    console.log(applications)
   } catch (error) {
     res.status(500).json({ error: "Server error" });
   }

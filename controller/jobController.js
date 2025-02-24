@@ -8,6 +8,7 @@ export const getAllJobs = async (req, res) => {
       "username email phone role"
     );
     res.status(200).json(jobs);
+    console.log(jobs)
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
