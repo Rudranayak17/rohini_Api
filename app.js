@@ -6,7 +6,8 @@ import { connectDB } from "./utils/db.js";
 import cors from "cors";
 import { errorMiddleware } from "./middleware/error.js";
 import userRouter from "./router/userRoute.js";
-import jobSeekerProvider from "./router/jobProviderRouter.js";
+import societyRouter from "./router/societyRouter.js";
+import postRouter from "./router/postRouter.js";
 config();
 const app = express();
 connectDB(process.env.MONGO_URI);
@@ -17,7 +18,6 @@ const corsOptions = {
     const allowedOrigins = [
       process.env.FRONTEND_URL,
       process.env.FRONTEND_URL2,
-      process.env.FRONTEND_URL3,
     ];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
@@ -34,7 +34,8 @@ app.get("/", (req, res) => {
   res.send(`<h1>Server is working </h1> `);
 });
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/job", jobSeekerProvider);
+app.use("/api/v1/society", societyRouter);
+app.use("/api/v1/post", postRouter);
 app.use("/uploads", express.static("uploads"));
 
 app.use(errorMiddleware);

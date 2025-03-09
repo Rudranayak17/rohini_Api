@@ -6,9 +6,9 @@ import ErrorHandler from "../utils/utilit-class.js";
 import sendToken from "../utils/sendToken.js";
 
 export const register = TryCatch(async (req, res, next) => {
-  const { username, email, password, phone, role } = req.body;
-console.log({ username, email, password, phone, role } )
-  if (!username || !email || !password || !role) {
+  const { username, email, password, phone, role, societyid } = req.body;
+  console.log({ username, email, password, phone, role });
+  if (!username || !email || !password | !phone) {
     return next(new ErrorHandler("Please fill in all fields", 400));
   }
   const existingUser = await User.findOne({ email });
@@ -17,8 +17,7 @@ console.log({ username, email, password, phone, role } )
   }
   // Generate OTP and its expiry time
   const otp = generateOTP();
-  const otp_expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
-  //create user and save
+  const otp_expiry = new Date(Date.now() + 10 * 60 * 1000);
   const newUser = await User.create({
     username: username,
     phone: phone,
@@ -26,7 +25,7 @@ console.log({ username, email, password, phone, role } )
     password,
     otp,
     otp_expiry,
-    role,
+    societyid,
   });
   await newUser.save();
 
@@ -74,18 +73,66 @@ export const getMyProfile = TryCatch(async (req, res, next) => {
 });
 
 export const updateProfile = TryCatch(async (req, res, next) => {
-  const { username, email, phone, address } = req.body;
-  console.log({ username, email, phone, address });
+  const {
+    username,
+    phone,
+    address,
+    profile_URL,
+    bio,
+    instagram,
+    twitter,
+    facebook,
+    linkedin,
+    birthdate,
+    anniversary
+  } = req.body;
+
   const id = req.user._id;
+
+  const updateData = {
+    username,
+    phone,
+    address,
+    profile_URL,
+    bio,
+    instagram,
+    twitter,
+    facebook,
+    linkedin,
+    birthdate: birthdate ? new Date(birthdate) : undefined,
+    anniversary: anniversary ? new Date(anniversary) : undefined
+  };
+
   const user = await User.findByIdAndUpdate(
     id,
-    { username, email, phone, address },
+    { $set: updateData },
     { new: true, runValidators: true }
   );
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found"
+    });
+  }
+
   return res.status(200).json({
     success: true,
     message: "Profile updated successfully",
-    user,
+    user: {
+      _id: user._id,
+      username: user.username,
+      phone: user.phone,
+      address: user.address,
+      profile_URL: user.profile_URL,
+      bio: user.bio,
+      instagram: user.instagram,
+      twitter: user.twitter,
+      facebook: user.facebook,
+      linkedin: user.linkedin,
+      birthdate: user.birthdate,
+      anniversary: user.anniversary
+    }
   });
 });
 

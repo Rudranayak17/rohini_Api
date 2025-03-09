@@ -20,13 +20,36 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["jobProvider", "jobSeeker","admin","superAdmin"],
-  
+      enum: ["user", "admin", "superAdmin"],
+      default: "user",
       required: true,
     },
     username: {
       type: String,
-    
+    },
+    profile_URL: {
+      type: String,
+    },
+    bio:{
+      type:String,
+    },
+    instagram:{
+      type:String,
+    },
+    twitter:{
+      type:String,
+    },
+    facebook:{
+      type:String,
+    },
+    linkedin:{
+      type:String,
+    },
+    birthdate:{
+      type:String,
+    },
+    anniversary:{
+      type:String
     },
     password: {
       type: String,
@@ -36,7 +59,10 @@ const userSchema = new Schema(
     profile: {
       type: String,
     },
-
+    disable: {
+      type: Boolean,
+      default: false,
+    },
     emailVerified: {
       type: Boolean,
       default: true,
@@ -52,6 +78,10 @@ const userSchema = new Schema(
     },
     resetPasswordOTPExpiry: {
       type: Date,
+    },
+    societyid:   {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Society",
     },
     phone: {
       type: String,

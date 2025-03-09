@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 export const connectDB = async (uri) => {
   try {
     const dbConnect = await mongoose.connect(uri, {
-      dbName: "rohini-venture",
+      dbName: "yks",
 
     });
     console.log(`MongoDB Connected: ${dbConnect.connection.host}`);
