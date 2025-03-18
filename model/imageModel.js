@@ -10,7 +10,7 @@ const imageSchema = new mongoose.Schema({
   },
   title: {
     type: String,
-    required: [true, 'Title is required'],
+    required: [true, 'Title iss required'],
     trim: true,
     minlength: [2, 'Title must be at least 2 characters long'],
     maxlength: [100, 'Title cannot exceed 100 characters']
